@@ -2,6 +2,7 @@ package org.example.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "matches")
@@ -46,4 +47,8 @@ public class Match {
 
     public LocalDateTime getDateTime() { return dateTime; }
     public void setDateTime(LocalDateTime dateTime) { this.dateTime = dateTime; }
+
+    public Long getUuid() {
+        return id;
+    }
 }
