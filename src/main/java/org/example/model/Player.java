@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 
 @Entity
-@Table(name = "players")
+@Table(name = "players", uniqueConstraints = @UniqueConstraint(columnNames = "name"))
 public class Player {
 
     @Id
@@ -13,6 +13,10 @@ public class Player {
 
     @Column(nullable = false, unique = true)
     private String name;
+
+    public Player(String name) {
+        this.name = name;
+    }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

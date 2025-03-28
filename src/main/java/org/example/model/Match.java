@@ -1,8 +1,6 @@
 package org.example.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "matches")
@@ -13,42 +11,97 @@ public class Match {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "player1_id", nullable = false)
+    @JoinColumn(name = "player1", nullable = false)
     private Player player1;
 
     @ManyToOne
-    @JoinColumn(name = "player2_id", nullable = false)
+    @JoinColumn(name = "player2", nullable = false)
     private Player player2;
 
-    @Column(nullable = false)
-    private Integer score1;
+    @ManyToOne
+    @JoinColumn(name = "winner", nullable = true)
+    private Player winner;
 
-    @Column(nullable = false)
-    private Integer score2;
+    // Счёт игроков
+    private int scorePlayer1 = 0;
+    private int scorePlayer2 = 0;
 
-    @Column(nullable = false)
-    private LocalDateTime dateTime;
+    public Match() {
+    }
 
+    public Match(Player player1, Player player2) {
+        this.player1 = player1;
+        this.player2 = player2;
+    }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Match(Player player1, Player player2, Player winner) {
+        this.player1 = player1;
+        this.player2 = player2;
+        this.winner = winner;
+    }
 
-    public Player getPlayer1() { return player1; }
-    public void setPlayer1(Player player1) { this.player1 = player1; }
+    public void incrementScore(Player player) {
+        if (player.equals(player1)) {
+            scorePlayer1++;
+        } else if (player.equals(player2)) {
+            scorePlayer2++;
+        }
+    }
 
-    public Player getPlayer2() { return player2; }
-    public void setPlayer2(Player player2) { this.player2 = player2; }
+    public boolean isFinished() {
+        if (scorePlayer1 >= 11 || scorePlayer2 >= 11) {
+            if (scorePlayer1 > scorePlayer2) {
+                winner = player1;
+            } else {
+                winner = player2;
+            }
+            return true;
+        }
+        return false;
+    }
 
-    public Integer getScore1() { return score1; }
-    public void setScore1(Integer score1) { this.score1 = score1; }
-
-    public Integer getScore2() { return score2; }
-    public void setScore2(Integer score2) { this.score2 = score2; }
-
-    public LocalDateTime getDateTime() { return dateTime; }
-    public void setDateTime(LocalDateTime dateTime) { this.dateTime = dateTime; }
-
-    public Long getUuid() {
+    public Long getId() {
         return id;
+    }
+
+    public Player getPlayer1() {
+        return player1;
+    }
+
+    public void setPlayer1(Player player1) {
+        this.player1 = player1;
+    }
+
+    public Player getPlayer2() {
+        return player2;
+    }
+
+    public void setPlayer2(Player player2) {
+        this.player2 = player2;
+    }
+
+    public Player getWinner() {
+        return winner;
+    }
+
+    public void setWinner(Player winner) {
+        this.winner = winner;
+    }
+
+    public int getScorePlayer1() {
+        return scorePlayer1;
+    }
+
+    public int getScorePlayer2() {
+        return scorePlayer2;
+    }
+
+    public Player getPlayerByName(String name) {
+        if (player1 != null && player1.getName().equals(name)) {
+            return player1;
+        } else if (player2 != null && player2.getName().equals(name)) {
+            return player2;
+        }
+        return null;
     }
 }

@@ -1,20 +1,18 @@
 package org.example.dao;
 
+import jakarta.persistence.*;
 import org.example.model.Player;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
+
 
 import java.util.List;
 
-public class PlayerDAO implements GenericDAO<Player> {
+public class PlayerDAO {
     private EntityManager entityManager;
 
     public PlayerDAO() {
         this.entityManager = Persistence.createEntityManagerFactory("tennis-dashboard").createEntityManager();
     }
 
-    @Override
     public void save(Player player) {
         EntityTransaction transaction = entityManager.getTransaction();
         try {
@@ -27,7 +25,23 @@ public class PlayerDAO implements GenericDAO<Player> {
         }
     }
 
-    @Override
+    public Player findByName(String name) {
+        try {
+            return entityManager.createQuery("SELECT p FROM Player p WHERE p.name = :name", Player.class)
+                    .setParameter("name", name)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+
+            return null;
+        } catch (PersistenceException e) {
+            throw new RuntimeException("Error getting player by name: " + name, e);
+        } catch (RuntimeException e) {
+            throw e;
+        }
+    }
+
+
+
     public void update(Player player) {
         EntityTransaction transaction = entityManager.getTransaction();
         try {
@@ -40,7 +54,6 @@ public class PlayerDAO implements GenericDAO<Player> {
         }
     }
 
-    @Override
     public void delete(Player player) {
         EntityTransaction transaction = entityManager.getTransaction();
         try {
@@ -53,12 +66,11 @@ public class PlayerDAO implements GenericDAO<Player> {
         }
     }
 
-    @Override
     public Player findById(Long id) {
         return entityManager.find(Player.class, id);
     }
 
-    @Override
+
     public List<Player> findAll() {
         return entityManager.createQuery("from Player", Player.class).getResultList();
     }
