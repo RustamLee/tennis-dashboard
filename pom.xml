@@ -7,6 +7,7 @@
     <groupId>org.example</groupId>
     <artifactId>tennis-dashboard</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging> <!-- Обновлено на war -->
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -85,7 +86,19 @@
                 </configuration>
             </plugin>
 
-            <!-- Maven WAR Plugin (для генерации .war файла) -->
+            <!-- Tomcat Plugin для запуска WAR -->
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <url>http://localhost:8080/manager/text</url>
+                    <server>TomcatServer</server>
+                    <path>/tennis-dashboard</path> <!-- Изменен путь приложения -->
+                </configuration>
+            </plugin>
+
+            <!-- Maven WAR Plugin для сборки WAR файла -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
