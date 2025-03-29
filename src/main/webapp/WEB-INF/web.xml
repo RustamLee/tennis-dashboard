@@ -8,7 +8,7 @@
         <welcome-file>/WEB-INF/views/index.jsp</welcome-file> <!-- the main page index.jsp -->
     </welcome-file-list>
 
-    <!-- Пример сервлета, если нужно будет обрабатывать запросы -->
+    <!-- Пример сервлета, -->
     <servlet>
         <servlet-name>indexServlet</servlet-name>
         <servlet-class>org.example.controller.IndexController</servlet-class>
