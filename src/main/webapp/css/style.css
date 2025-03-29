@@ -10,31 +10,35 @@ html, body {
 }
 
 /* ball-animation */
+
+
 .ball {
-  position: absolute;
+pointer-events: none;
+  position: fixed;
   background-size: cover;
   z-index: -1;
   margin-bottom: 0;
-  left:200px;
-  top: 200px;
-  width: 900px;
-  height:900px;
+    right: 10%;
+    top: 30%;
+  width: 700px;
+  height:700px;
 }
 
 .ball1 {
-  position: absolute;
+pointer-events: none;
+  position: fixed;
   background-size: cover;
   z-index: -1;
   margin-bottom: 0;
-  right:200px;
-  top: 500px;
-  width: 900px;
-  height:900px;
+    left: 10%;
+    top: 10%;
+  width: 700px;
+  height:700px;
 }
 
 .ball-img{
-width:200px;
-height:200px;
+    width: 12vw;
+    height: 12vw;
 }
 
 
@@ -48,6 +52,7 @@ height:200px;
 }
 
 .rotation{
+
   animation-name: rotation;
   animation-duration: 20s;
   animation-iteration-count: infinite;
@@ -79,7 +84,6 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
 }
 
 .container {
@@ -112,12 +116,14 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 30px;
+  gap: 20px;
     position: relative;
     z-index: 1;
 }
 
 .button {
+  opacity: 0.9;
+
   font-size: 35px;
   display: inline-flex;
   padding: 10px 20px;
@@ -153,7 +159,7 @@ main {
 .header {
     background-color: #4CAF50;
     width: 100%;
-    height: 80px;
+    height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -171,15 +177,19 @@ main {
     position: relative;
 }
 
-.header-logo {
-    position: absolute;
-    left: 30px;
-    top: 25px;
-    font-size: 30px;
-    color: white;
+.left-container{
+display: flex;
+align-items:center;
+padding:10px;
 }
 
-.header-logo:hover {
+.header-logo-link {
+    font-size: 30px;
+    color: white;
+    text-decoration: none;
+}
+
+.header-logo-link:hover {
     color: #a4d8a6;
     cursor: pointer;
 }
@@ -223,14 +233,15 @@ nav ul li a:hover {
 /* footer */
 
 footer {
-    margin-top: auto;
+    height: 80px;
     background-color: #4CAF50;
+    margin-top: auto;
     color: white;
     width: 100%;
-    height: 80px;
     display: flex;
     justify-content: center;
-     font-size: 14px;
+    font-size: 14px;
+    align-items: center;
 }
 
 

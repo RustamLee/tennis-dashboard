@@ -1,3 +1,4 @@
+<%-- main page --%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,18 +13,16 @@
 <body>
 <%@ include file="partials/header.jsp" %>
 <main>
-<body>
-    <div class="ball rotation">
+   <div class="ball rotation">
        <img class="ball-img" src="${pageContext.request.contextPath}/images/ball.png">
-    </div>
-
-    <div class="ball1 rotation1">
+   </div>
+   <div class="ball1 rotation1">
        <img class="ball-img" src="${pageContext.request.contextPath}/images/ball.png">
-    </div>
+   </div>
 
     <div class="container">
         <div class="image-container">
-            <img class="image" src="${pageContext.request.contextPath}/images/main-page.jpg">
+            <img class="image" src="${pageContext.request.contextPath}/images/main-page2.jpg">
         </div>
       <div class="buttons-container">
         <a href="/new-match" class="button">New Match</a>
@@ -32,7 +31,6 @@
     </div>
     <h1></h1>
 </main>
-
     <%@ include file="partials/footer.jsp" %>
 </body>
 </html>

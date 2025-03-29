@@ -10,10 +10,10 @@
 <body>
 <header class="header">
     <div class="header-container">
+    <div class ="left-container">
+        <a href="<%= request.getContextPath() %>/" class="header-logo-link"><i class="ri-ping-pong-line"></i></a>
         <a href="<%= request.getContextPath() %>/" class="about-link">About</a>
-        <a href="<%= request.getContextPath() %>/" class="header-logo-link">
-            <i class="ri-ping-pong-line header-logo"></i>
-        </a>
+    </div>
         <nav class="nav-menu">
             <ul>
                 <li><a href="<%= request.getContextPath() %>/">Home</a></li>
