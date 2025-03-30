@@ -5,7 +5,7 @@ import org.example.model.Match;
 
 public class FinishedMatchesPersistenceService {
 
-    private MatchDAO matchDAO;
+    private final MatchDAO matchDAO;
 
     public FinishedMatchesPersistenceService() {
         this.matchDAO = new MatchDAO();

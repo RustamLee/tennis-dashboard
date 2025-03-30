@@ -1,6 +1,7 @@
 package org.example.controller;
 
-import jakarta.servlet.RequestDispatcher;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,20 +15,26 @@ import org.example.service.MatchScoreCalculationService;
 import org.example.service.OngoingMatchesService;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
-@WebServlet("/new-match")
+@WebServlet(name = "MatchController", urlPatterns = "/new-match")
 public class MatchController extends HttpServlet {
 
-    private PlayerDAO playerDAO = new PlayerDAO();
-    private OngoingMatchesService ongoingMatchesService = new OngoingMatchesService();
-    private MatchScoreCalculationService matchScoreCalculationService = new MatchScoreCalculationService();
-    private FinishedMatchesPersistenceService finishedMatchesPersistenceService = new FinishedMatchesPersistenceService();
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("tennis-dashboard");
+
+    private PlayerDAO playerDAO = new PlayerDAO(emf);
+    private final OngoingMatchesService ongoingMatchesService = new OngoingMatchesService();
+    private final MatchScoreCalculationService matchScoreCalculationService = new MatchScoreCalculationService();
+    private final FinishedMatchesPersistenceService finishedMatchesPersistenceService = new FinishedMatchesPersistenceService();
+
+    public MatchController() {
+        super();
+    }
 
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("id");
-
         try {
             Long matchId = Long.parseLong(id);
             Match match = ongoingMatchesService.getMatch(matchId);
@@ -44,9 +51,7 @@ public class MatchController extends HttpServlet {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid winner name");
                 return;
             }
-
-            matchScoreCalculationService.updateScore(match, winner);  // Обновляем счёт
-
+            matchScoreCalculationService.updateScore(match, winner);
             if (match.isFinished()) {
                 ongoingMatchesService.removeMatch(match.getId());
                 finishedMatchesPersistenceService.saveMatch(match);
@@ -64,7 +69,11 @@ public class MatchController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/new-match.jsp");
-        dispatcher.forward(request, response);
+        response.setContentType("text/plain");
+        PrintWriter out = response.getWriter();
+        out.println("MatchController is running!");
+        System.out.println("MatchController: doGet() called");
+        request.getRequestDispatcher("/WEB-INF/views/new-match.jsp").forward(request, response);
     }
+
 }

@@ -7,11 +7,15 @@ import org.example.model.Player;
 import java.util.List;
 
 public class PlayerDAO {
+
+    private final EntityManagerFactory entityManagerFactory;
     private EntityManager entityManager;
 
-    public PlayerDAO() {
-        this.entityManager = Persistence.createEntityManagerFactory("tennis-dashboard").createEntityManager();
+    public PlayerDAO(EntityManagerFactory entityManagerFactory) {
+        this.entityManagerFactory = entityManagerFactory;
+        this.entityManager = entityManagerFactory.createEntityManager();
     }
+
 
     public void save(Player player) {
         EntityTransaction transaction = entityManager.getTransaction();
@@ -39,8 +43,6 @@ public class PlayerDAO {
             throw e;
         }
     }
-
-
 
     public void update(Player player) {
         EntityTransaction transaction = entityManager.getTransaction();

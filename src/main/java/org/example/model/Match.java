@@ -2,6 +2,7 @@ package org.example.model;
 
 import jakarta.persistence.*;
 
+
 @Entity
 @Table(name = "matches")
 public class Match {
@@ -22,8 +23,10 @@ public class Match {
     @JoinColumn(name = "winner", nullable = true)
     private Player winner;
 
-    // Счёт игроков
+    @Column(name = "score_player1")
     private int scorePlayer1 = 0;
+
+    @Column(name = "score_player2")
     private int scorePlayer2 = 0;
 
     public Match() {
@@ -50,11 +53,7 @@ public class Match {
 
     public boolean isFinished() {
         if (scorePlayer1 >= 11 || scorePlayer2 >= 11) {
-            if (scorePlayer1 > scorePlayer2) {
-                winner = player1;
-            } else {
-                winner = player2;
-            }
+            winner = (scorePlayer1 > scorePlayer2) ? player1 : player2;
             return true;
         }
         return false;

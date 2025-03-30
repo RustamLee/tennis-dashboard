@@ -13,20 +13,20 @@
 <body>
 <%@ include file="partials/header.jsp" %>
 <main>
-   <div class="ball rotation">
+   <div class="ball rotations">
        <img class="ball-img" src="${pageContext.request.contextPath}/images/ball.png">
    </div>
-   <div class="ball1 rotation1">
+   <div class="ball1 rotations1">
        <img class="ball-img" src="${pageContext.request.contextPath}/images/ball.png">
    </div>
 
     <div class="container">
         <div class="image-container">
-            <img class="image" src="${pageContext.request.contextPath}/images/main-page2.jpg">
+            <img class="image" src="${pageContext.request.contextPath}/images/main-page.jpg">
         </div>
       <div class="buttons-container">
-        <a href="/new-match" class="button">New Match</a>
-        <a href="/matches" class="button">Current Matches</a
+        <a href="${pageContext.request.contextPath}/new-match" class="button">New Match</a>
+        <a href="${pageContext.request.contextPath}/matches" class="button">Current Matches</a>
       </div>
     </div>
     <h1></h1>
