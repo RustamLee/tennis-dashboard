@@ -1,4 +1,3 @@
-
 /* main styles */
 html, body {
     height: 100%;
@@ -9,71 +8,74 @@ html, body {
     overflow: hidden;
 }
 
-/* ball-animation */
+/* new-match page */
 
-
-.ball {
-pointer-events: none;
-  position: fixed;
-  background-size: cover;
-  z-index: -1;
-  margin-bottom: 0;
-    right: 10%;
-    top: 30%;
-  width: 700px;
-  height:700px;
+h2 {
+    font-size: 55px;
+    color: #4CAF50;
+    text-align: center;
+    margin: 0;
 }
 
-.ball1 {
-pointer-events: none;
-  position: fixed;
-  background-size: cover;
-  z-index: -1;
-  margin-bottom: 0;
-    left: 10%;
-    top: 10%;
-  width: 700px;
-  height:700px;
+.subtitle {
+    font-size: 24px;
+    color: #ac84a4;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-.ball-img{
-    width: 12vw;
-    height: 12vw;
+.form-container {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    position: relative;
+    z-index: 1;
 }
 
-
-@keyframes rotation{
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    position: relative;
+    z-index: 1;
 }
 
-.rotation{
-
-  animation-name: rotation;
-  animation-duration: 20s;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease;
+.input-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-
-@keyframes rotation1{
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(-360deg);
-  }
+.input-container i {
+    font-size: 40px;
+    color: #ac84a4;
 }
 
-.rotation1{
-  animation-name: rotation1;
-  animation-duration: 20s;
-  animation-iteration-count: infinite;
-animation-timing-function: ease-in;
+input {
+    border: none;
+    border-bottom: 2px solid #ccc;
+    border-radius: 0;
+    outline: none;
+    width: 100%;
+    font-size: 35px;
+    color: #757575;
+}
+
+input::placeholder {
+    color: gray;
+    opacity: 0.5;
+    font-style: italic;
+}
+
+input:focus {
+    border-bottom: 2px solid #4CAF50;
+}
+
+.new-match-button {
+    margin-top: 30px;
 }
 
 /* main page */
@@ -84,77 +86,145 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 80%;
 }
 
 .container {
-  display: flex;
-  max-width: 1200px;
-  justify-content: space-between;
-  margin: 0 auto;
-  padding: 20px;
-  position: relative;
-  z-index: 1;
+    display: flex;
+    max-width: 1200px;
+    height: 80% !important;
+    justify-content: space-between;
+    margin: 0 auto;
+    padding: 10px 30px 10px 30px;
+    position: relative;
+    z-index: 1;
 }
 
 .image-container {
-  width: 40%;
+    width: 45%;
     position: relative;
     z-index: 1;
+    overflow: hidden;
 }
 
-
-
 .image {
-  width: 100%;
-  height: auto;
-  border-radius:12px;
-  opacity: 0.9;
+    width: 100%;
+    height: 100%;
+    opacity: 0.9;
     position: relative;
     z-index: 1;
+    object-fit: cover;
+    border-radius: 12px !important;
 }
 
 .buttons-container {
-  width: 50%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 20px;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
     position: relative;
     z-index: 1;
 }
 
 .button {
-  opacity: 0.9;
-
-  font-size: 35px;
-  display: inline-flex;
-  padding: 10px 20px;
-  color: white;
-  background-color:#4CAF50;
-  text-align: center;
-  align-items: center;
-  justify-content:center;
-  text-decoration: none;
-  border-radius: 12px;
-  cursor: pointer;
-  height: 50%;
-  transition: all 0.2s ease-in-out;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: none;
+    opacity: 0.9;
+    font-size: 35px;
+    display: inline-flex;
+    padding: 10px 20px;
+    color: white;
+    background-color: #4CAF50;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    border-radius: 12px;
+    cursor: pointer;
+    height: 50%;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     position: relative;
     z-index: 1;
 }
 
 .button:hover {
-  background-color: #3D8C40;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2) inset;
-  border: none;
-  transform: translateY(-1px);
+    background-color: #3D8C40;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2) inset;
+    border: none;
+    transform: translateY(-1px);
+    color: #dee6d9;
 }
 
 .button:active {
     transform: translateY(2px);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) inset;
     transform: scale(0.96);
+}
+
+/* ball-animation */
+
+.ball {
+    pointer-events: none;
+    position: fixed;
+    background-size: cover;
+    z-index: -1;
+    margin-bottom: 0;
+    right: 10%;
+    top: 30%;
+    width: 700px;
+    height: 700px;
+}
+
+.ball1 {
+    pointer-events: none;
+    position: fixed;
+    background-size: cover;
+    z-index: -1;
+    margin-bottom: 0;
+    left: 10%;
+    top: 10%;
+    width: 700px;
+    height: 700px;
+}
+
+.ball-img {
+    width: 12vw;
+    height: 12vw;
+    opacity: 0.9;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.rotation {
+
+    animation-name: rotation;
+    animation-duration: 20s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease;
+}
+
+@keyframes rotation1 {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(-360deg);
+    }
+}
+
+.rotation1 {
+    animation-name: rotation1;
+    animation-duration: 20s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in;
 }
 
 /* header */
@@ -179,10 +249,10 @@ main {
     position: relative;
 }
 
-.left-container{
-display: flex;
-align-items:center;
-padding:10px;
+.left-container {
+    display: flex;
+    align-items: center;
+    padding: 10px;
 }
 
 .header-logo-link {
@@ -192,7 +262,7 @@ padding:10px;
 }
 
 .header-logo-link:hover {
-    color: #a4d8a6;
+    color: #dee6d9;
     cursor: pointer;
 }
 
@@ -205,7 +275,7 @@ padding:10px;
 }
 
 .about-link:hover {
-     color: #a4d8a6; /* Цвет при наведении (можно изменить на желаемый) */
+    color: #dee6d9;
 }
 
 nav ul {
@@ -229,7 +299,7 @@ nav ul li a {
 nav ul li a:hover {
 
     border-radius: 5px;
-    color: #a4d8a6;
+    color: #dee6d9;
 }
 
 /* footer */

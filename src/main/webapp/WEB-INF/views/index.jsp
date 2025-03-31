@@ -13,10 +13,10 @@
 <body>
 <%@ include file="partials/header.jsp" %>
 <main>
-   <div class="ball rotations">
+   <div class="ball rotation">
        <img class="ball-img" src="${pageContext.request.contextPath}/images/ball.png">
    </div>
-   <div class="ball1 rotations1">
+   <div class="ball1 rotation1">
        <img class="ball-img" src="${pageContext.request.contextPath}/images/ball.png">
    </div>
 
