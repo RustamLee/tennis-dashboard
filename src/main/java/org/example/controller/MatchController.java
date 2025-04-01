@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.dao.PlayerDAO;
 import org.example.model.Match;
+import org.example.model.MatchScoreModel;
 import org.example.model.Player;
 import org.example.service.FinishedMatchesPersistenceService;
 import org.example.service.MatchScoreCalculationService;
@@ -64,8 +65,9 @@ public class MatchController extends HttpServlet {
         }
 
         Match match = new Match(playerOne, playerTwo);
+        MatchScoreModel matchScoreModel = new MatchScoreModel(match);
         UUID matchUuid = match.getMatchUuid();
-        ongoingMatchesService.addMatch(match);
+        ongoingMatchesService.addMatch(matchScoreModel);
         System.out.println("Added match with UUID: " + match.getMatchUuid());
 
         response.sendRedirect(request.getContextPath() + "/match-score?uuid=" + matchUuid);

@@ -1,6 +1,7 @@
 package org.example.service;
 
 import org.example.model.Match;
+import org.example.model.MatchScoreModel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,20 +9,17 @@ import java.util.UUID;
 
 public class OngoingMatchesService {
 
-    private Map<UUID, Match> ongoingMatches = new HashMap<>();
+    private final Map<UUID, MatchScoreModel> ongoingMatches = new HashMap<>();
 
-    public void addMatch(Match match) {
-        ongoingMatches.put(match.getMatchUuid(), match);
+    public void addMatch(MatchScoreModel matchScoreModel) {
+        ongoingMatches.put(matchScoreModel.getMatch().getMatchUuid(), matchScoreModel);
     }
 
-    public Match getMatch(UUID uuid) {
-        return ongoingMatches.get(uuid);
+    public MatchScoreModel getMatchScoreModel(UUID matchUuid) {
+        return ongoingMatches.get(matchUuid);
     }
 
-    public void removeMatch(UUID uuid) {ongoingMatches.remove(uuid);
-    }
-
-    public Map<UUID, Match> getAllMatches() {
-        return ongoingMatches;
+    public void removeMatch(UUID matchUuid) {
+        ongoingMatches.remove(matchUuid);
     }
 }

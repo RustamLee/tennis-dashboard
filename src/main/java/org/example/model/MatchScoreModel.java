@@ -1,16 +1,22 @@
 package org.example.model;
 
+import java.util.UUID;
+
 public class MatchScoreModel {
     private final Match match;
     private int setsPlayer1;
     private int setsPlayer2;
     private int gamesPlayer1;
     private int gamesPlayer2;
+    private boolean isTieBreak;
+    private int tieBreakPointsPlayer1;
+    private int tieBreakPointsPlayer2;
     private int pointsPlayer1;
     private int pointsPlayer2;
 
     public MatchScoreModel(Match match) {
         this.match = match;
+        this.isTieBreak = false;
         // defoult values
         this.setsPlayer1 = 0;
         this.setsPlayer2 = 0;
@@ -22,6 +28,10 @@ public class MatchScoreModel {
 
     public Match getMatch() {
         return match;
+    }
+
+    public UUID getUiidMatch() {
+        return this.match.getMatchUuid();
     }
 
     public int getSetsPlayer1() {
@@ -71,5 +81,28 @@ public class MatchScoreModel {
 
     public void setPointsPlayer2(int pointsPlayer2) {
         this.pointsPlayer2 = pointsPlayer2;
+    }
+    public boolean isTieBreak() {
+        return isTieBreak;
+    }
+
+    public void setTieBreak(boolean tieBreak) {
+        this.isTieBreak = tieBreak;
+    }
+
+    public int getTieBreakPointsPlayer1() {
+        return tieBreakPointsPlayer1;
+    }
+
+    public void setTieBreakPointsPlayer1(int points) {
+        this.tieBreakPointsPlayer1 = points;
+    }
+
+    public int getTieBreakPointsPlayer2() {
+        return tieBreakPointsPlayer2;
+    }
+
+    public void setTieBreakPointsPlayer2(int points) {
+        this.tieBreakPointsPlayer2 = points;
     }
 }

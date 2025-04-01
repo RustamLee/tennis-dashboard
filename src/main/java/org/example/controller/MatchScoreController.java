@@ -38,7 +38,7 @@ public class MatchScoreController extends HttpServlet {
         }
         try {
             UUID matchUuid = UUID.fromString(uuidParam);
-            Match match = ongoingMatchesService.getMatch(matchUuid);
+            Match match = ongoingMatchesService.getMatchScoreModel(matchUuid).getMatch();
             if (match == null) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Match not found");
                 return;
@@ -52,37 +52,34 @@ public class MatchScoreController extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String uuid = request.getParameter("uuid");
-        try {
-            UUID matchUuid = UUID.fromString(uuid);
-            Match match = ongoingMatchesService.getMatch(matchUuid);
-            if (match == null) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Match not found");
-                return;
-            }
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String uuidParam = request.getParameter("uuid");
+        String winner = request.getParameter("winner");
 
-            MatchScoreModel matchScoreModel = new MatchScoreModel(match);
-            String winner = request.getParameter("winner");
-            if (winner == null || winner.isEmpty()) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Winner parameter is missing");
-                return;
-            }
+        if (uuidParam == null || winner == null) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing parameters");
+            return;
+        }
 
-            Player scoringPlayer = "player1".equals(winner) ? match.getPlayer1() : match.getPlayer2();
-            matchScoreCalculationService.incrementScore(matchScoreModel, scoringPlayer);
+        UUID matchUuid = UUID.fromString(uuidParam);
+        MatchScoreModel matchScoreModel = ongoingMatchesService.getMatchScoreModel(matchUuid);
 
-            if (match.getWinner() != null) {
-                ongoingMatchesService.removeMatch(match.getMatchUuid());
-                finishedMatchesPersistenceService.saveMatch(match);
-                request.setAttribute("match", match);
-                request.getRequestDispatcher("/WEB-INF/views/final-score.jsp").forward(request, response);
-            } else {
-                request.setAttribute("matchScore", matchScoreModel);
-                request.getRequestDispatcher("/WEB-INF/views/match-score.jsp").forward(request, response);
-            }
-        } catch (IllegalArgumentException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid match ID format");
+        if (matchScoreModel == null) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Match not found");
+            return;
+        }
+
+        Player scoringPlayer = winner.equals("player1") ? matchScoreModel.getMatch().getPlayer1() : matchScoreModel.getMatch().getPlayer2();
+        matchScoreCalculationService.incrementScore(matchScoreModel, scoringPlayer);
+
+        if (matchScoreModel.getMatch().getWinner() != null) {
+            ongoingMatchesService.removeMatch(matchUuid);
+            finishedMatchesPersistenceService.saveMatch(matchScoreModel.getMatch());
+            request.getRequestDispatcher("/WEB-INF/views/final-score.jsp").forward(request, response);
+        } else {
+            request.setAttribute("matchScore", matchScoreModel);
+            request.getRequestDispatcher("/WEB-INF/views/match-score.jsp").forward(request, response);
         }
     }
+
 }
