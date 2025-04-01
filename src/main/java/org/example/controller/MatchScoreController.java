@@ -71,15 +71,20 @@ public class MatchScoreController extends HttpServlet {
 
         Player scoringPlayer = winner.equals("player1") ? matchScoreModel.getMatch().getPlayer1() : matchScoreModel.getMatch().getPlayer2();
         matchScoreCalculationService.incrementScore(matchScoreModel, scoringPlayer);
-
         if (matchScoreModel.getMatch().getWinner() != null) {
             ongoingMatchesService.removeMatch(matchUuid);
             finishedMatchesPersistenceService.saveMatch(matchScoreModel.getMatch());
+            request.setAttribute("matchScore", matchScoreModel); // Передаём объект в JSP
             request.getRequestDispatcher("/WEB-INF/views/final-score.jsp").forward(request, response);
         } else {
             request.setAttribute("matchScore", matchScoreModel);
             request.getRequestDispatcher("/WEB-INF/views/match-score.jsp").forward(request, response);
         }
+
+
+
     }
+
+
 
 }
