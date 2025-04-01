@@ -1,7 +1,7 @@
 package org.example.model;
 
 import jakarta.persistence.*;
-
+import java.util.UUID;
 
 @Entity
 @Table(name = "matches")
@@ -23,40 +23,22 @@ public class Match {
     @JoinColumn(name = "winner", nullable = true)
     private Player winner;
 
-    @Column(name = "score_player1")
-    private int scorePlayer1 = 0;
+    @Transient // use only for not finalized matches
+    private UUID matchUuid;
 
-    @Column(name = "score_player2")
-    private int scorePlayer2 = 0;
-
-    public Match() {
-    }
+    public Match() {}
 
     public Match(Player player1, Player player2) {
         this.player1 = player1;
         this.player2 = player2;
+        this.matchUuid = UUID.randomUUID();
     }
 
-    public Match(Player player1, Player player2, Player winner) {
-        this.player1 = player1;
-        this.player2 = player2;
-        this.winner = winner;
+    public UUID getMatchUuid() {
+        return matchUuid;
     }
-
-    public void incrementScore(Player player) {
-        if (player.equals(player1)) {
-            scorePlayer1++;
-        } else if (player.equals(player2)) {
-            scorePlayer2++;
-        }
-    }
-
-    public boolean isFinished() {
-        if (scorePlayer1 >= 11 || scorePlayer2 >= 11) {
-            winner = (scorePlayer1 > scorePlayer2) ? player1 : player2;
-            return true;
-        }
-        return false;
+    public void setMatchUuid(UUID matchUuid) {
+        this.matchUuid = matchUuid;
     }
 
     public Long getId() {
@@ -87,20 +69,14 @@ public class Match {
         this.winner = winner;
     }
 
-    public int getScorePlayer1() {
-        return scorePlayer1;
-    }
-
-    public int getScorePlayer2() {
-        return scorePlayer2;
-    }
-
-    public Player getPlayerByName(String name) {
-        if (player1 != null && player1.getName().equals(name)) {
-            return player1;
-        } else if (player2 != null && player2.getName().equals(name)) {
-            return player2;
-        }
-        return null;
+    @Override
+    public String toString() {
+        return "Match{" +
+                "id=" + id +
+                ", player1=" + player1 +
+                ", player2=" + player2 +
+                ", winner=" + winner +
+                ", matchUuid=" + matchUuid +
+                '}';
     }
 }

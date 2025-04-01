@@ -8,6 +8,95 @@ html, body {
     overflow: hidden;
 }
 
+/* match-score page */
+
+.content-table {
+    font-size: 35px;
+    margin: 25px 0;
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 500px;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    table-layout: fixed;
+    opacity: 0.9;
+    color: #757575;
+}
+
+.content-table th:first-child,
+.content-table td:first-child {
+    width: 40%;
+}
+
+.content-table th:not(:first-child),
+.content-table td:not(:first-child) {
+    width: 15%;
+    text-align: center;
+}
+
+.content-table thead tr {
+    background-color: #4CAF50;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+}
+
+.content-table th,
+.content-table td {
+    padding: 12px 15px;
+}
+
+.content-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.content-table tbody tr.active-row {
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+.content-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.content-table tbody tr:last-of-type {
+    border-bottom: 2px solid #4CAF50;
+}
+
+.content-table td:last-child button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 5px;}
+
+.content-table td:last-child button:hover{
+    background-color: #3D8C40;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2) inset;
+    border: none;
+    transform: translateY(-1px);
+    color: #dee6d9;
+}
+
+.content-table tbody td:first-child {
+    color: #ac84a4;
+}
+
+.table-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px;
+    height: 80% !important;
+    justify-content: space-between;
+    margin: 0 auto;
+    padding: 10px 30px 10px 30px;
+    position: relative;
+    z-index: 1;
+}
+
 /* new-match page */
 
 h2 {
@@ -189,8 +278,8 @@ main {
 }
 
 .ball-img {
-    width: 12vw;
-    height: 12vw;
+    width: 5vw;
+    height: 5vw;
     opacity: 0.9;
 }
 
@@ -236,6 +325,7 @@ main {
     justify-content: center;
     align-items: center;
     position: relative;
+    opacity: 0.9;
 }
 
 .header-container {
@@ -314,6 +404,7 @@ footer {
     justify-content: center;
     font-size: 14px;
     align-items: center;
+    opacity: 0.9;
 }
 
 

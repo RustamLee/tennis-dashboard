@@ -1,3 +1,5 @@
+<%-- the page for create a new match --%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,17 +19,18 @@
         <div class="form-container">
             <h2>Start a New Match</h2>
             <p class="subtitle">Enter the names of the players. Names cannot be the same</p>
-            <form action="/new-match" method="POST" class="form">
+            <form action="${pageContext.request.contextPath}/new-match" method="POST" class="form">
                 <div class="input-container">
                     <i class="ri-user-line"></i>
-                    <input type="text" id="player1" name="player1" required placeholder="player's name">
+                    <input type="text" id="player1" name="playerOne" required placeholder="player's name">
                 </div>
                 <div class="input-container">
                     <i class="ri-user-line"></i>
-                    <input type="text" id="player2" name="player2" required placeholder="player's name">
+                    <input type="text" id="player2" name="playerTwo" required placeholder="player's name">
                 </div>
                 <button type="submit" class="button new-match-button">Play</button>
             </form>
+
         </div>
     </div>
 </main>

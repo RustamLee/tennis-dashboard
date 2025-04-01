@@ -16,55 +16,59 @@ import org.example.service.OngoingMatchesService;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.UUID;
 
 @WebServlet(name = "MatchController", urlPatterns = "/new-match")
 public class MatchController extends HttpServlet {
 
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("tennis-dashboard");
+    private OngoingMatchesService ongoingMatchesService;
+    private PlayerDAO playerDAO;
+    private MatchScoreCalculationService matchScoreCalculationService;
+    private FinishedMatchesPersistenceService finishedMatchesPersistenceService;
 
-    private PlayerDAO playerDAO = new PlayerDAO(emf);
-    private final OngoingMatchesService ongoingMatchesService = new OngoingMatchesService();
-    private final MatchScoreCalculationService matchScoreCalculationService = new MatchScoreCalculationService();
-    private final FinishedMatchesPersistenceService finishedMatchesPersistenceService = new FinishedMatchesPersistenceService();
+    @Override
+    public void init() throws ServletException {
+        getServletContext().setAttribute("ongoingMatchesService", new OngoingMatchesService());
+        getServletContext().setAttribute("finishedMatchesPersistenceService", new FinishedMatchesPersistenceService());
+        ongoingMatchesService = (OngoingMatchesService) getServletContext().getAttribute("ongoingMatchesService");
+        finishedMatchesPersistenceService = (FinishedMatchesPersistenceService) getServletContext().getAttribute("finishedMatchesPersistenceService");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("tennis-dashboard");
+        playerDAO = new PlayerDAO(emf);
+        matchScoreCalculationService = new MatchScoreCalculationService();
+    }
 
     public MatchController() {
         super();
     }
 
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String id = request.getParameter("id");
-        try {
-            Long matchId = Long.parseLong(id);
-            Match match = ongoingMatchesService.getMatch(matchId);
+        String playerOneName = request.getParameter("playerOne");
+        String playerTwoName = request.getParameter("playerTwo");
 
-            if (match == null) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Match not found");
-                return;
-            }
-
-            String winnerName = request.getParameter("winner");
-            Player winner = match.getPlayerByName(winnerName);
-
-            if (winner == null) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid winner name");
-                return;
-            }
-            matchScoreCalculationService.updateScore(match, winner);
-            if (match.isFinished()) {
-                ongoingMatchesService.removeMatch(match.getId());
-                finishedMatchesPersistenceService.saveMatch(match);
-                request.setAttribute("match", match);
-                request.getRequestDispatcher("/WEB-INF/views/final-score.jsp").forward(request, response);
-            } else {
-                request.setAttribute("match", match);
-                request.getRequestDispatcher("/WEB-INF/views/match-score.jsp").forward(request, response);
-            }
-
-        } catch (NumberFormatException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid match ID format");
+        if (playerOneName == null || playerTwoName == null || playerOneName.trim().isEmpty() || playerTwoName.trim().isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Both player names must be provided.");
+            return;
         }
+
+        Player playerOne = playerDAO.findByName(playerOneName);
+        if (playerOne == null) {
+            playerOne = new Player(playerOneName);
+            playerDAO.save(playerOne);
+        }
+
+        Player playerTwo = playerDAO.findByName(playerTwoName);
+        if (playerTwo == null) {
+            playerTwo = new Player(playerTwoName);
+            playerDAO.save(playerTwo);
+        }
+
+        Match match = new Match(playerOne, playerTwo);
+        UUID matchUuid = match.getMatchUuid();
+        ongoingMatchesService.addMatch(match);
+        System.out.println("Added match with UUID: " + match.getMatchUuid());
+
+        response.sendRedirect(request.getContextPath() + "/match-score?uuid=" + matchUuid);
     }
 
     @Override

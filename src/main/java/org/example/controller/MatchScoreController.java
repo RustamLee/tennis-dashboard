@@ -1,80 +1,88 @@
 package org.example.controller;
 
-
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.model.Match;
+import org.example.model.MatchScoreModel;
+import org.example.model.Player;
 import org.example.service.FinishedMatchesPersistenceService;
+import org.example.service.MatchScoreCalculationService;
 import org.example.service.OngoingMatchesService;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @WebServlet("/match-score")
 public class MatchScoreController extends HttpServlet {
 
-    private OngoingMatchesService ongoingMatchesService = new OngoingMatchesService();
-    private FinishedMatchesPersistenceService finishedMatchesPersistenceService = new FinishedMatchesPersistenceService();
+    private OngoingMatchesService ongoingMatchesService;
+    private FinishedMatchesPersistenceService finishedMatchesPersistenceService;
+    private MatchScoreCalculationService matchScoreCalculationService;
+
+    @Override
+    public void init() throws ServletException {
+        ongoingMatchesService = (OngoingMatchesService) getServletContext().getAttribute("ongoingMatchesService");
+        finishedMatchesPersistenceService = (FinishedMatchesPersistenceService) getServletContext().getAttribute("finishedMatchesPersistenceService");
+        matchScoreCalculationService = new MatchScoreCalculationService();
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String id = request.getParameter("id");
-
-        try{
-            Long matchId = Long.parseLong(id);
-            Match match = ongoingMatchesService.getMatch(matchId);
+        String uuidParam = request.getParameter("uuid");
+        if (uuidParam == null || uuidParam.isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Match ID is missing");
+            return;
+        }
+        try {
+            UUID matchUuid = UUID.fromString(uuidParam);
+            Match match = ongoingMatchesService.getMatch(matchUuid);
             if (match == null) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Match not found");
                 return;
             }
-            request.setAttribute("match", match);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/match-score.jsp");
-            dispatcher.forward(request, response);
-
-        } catch (NumberFormatException e) {
+            MatchScoreModel matchScoreModel = new MatchScoreModel(match);
+            request.setAttribute("matchScore", matchScoreModel);
+            request.getRequestDispatcher("/WEB-INF/views/match-score.jsp").forward(request, response);
+        } catch (IllegalArgumentException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid match ID format");
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String id = request.getParameter("id");
-
+        String uuid = request.getParameter("uuid");
         try {
-            Long matchId = Long.parseLong(id);
-            Match match = ongoingMatchesService.getMatch(matchId);
-
+            UUID matchUuid = UUID.fromString(uuid);
+            Match match = ongoingMatchesService.getMatch(matchUuid);
             if (match == null) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Match not found");
                 return;
             }
 
+            MatchScoreModel matchScoreModel = new MatchScoreModel(match);
             String winner = request.getParameter("winner");
-            if ("player1".equals(winner)) {
-                match.incrementScore(match.getPlayer1());
-            } else if ("player2".equals(winner)) {
-                match.incrementScore(match.getPlayer2());
-            } else {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid winner parameter");
+            if (winner == null || winner.isEmpty()) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Winner parameter is missing");
                 return;
             }
 
-            if (match.isFinished()) {
-                ongoingMatchesService.removeMatch(match.getId());
+            Player scoringPlayer = "player1".equals(winner) ? match.getPlayer1() : match.getPlayer2();
+            matchScoreCalculationService.incrementScore(matchScoreModel, scoringPlayer);
+
+            if (match.getWinner() != null) {
+                ongoingMatchesService.removeMatch(match.getMatchUuid());
                 finishedMatchesPersistenceService.saveMatch(match);
                 request.setAttribute("match", match);
                 request.getRequestDispatcher("/WEB-INF/views/final-score.jsp").forward(request, response);
             } else {
-                request.setAttribute("match", match);
+                request.setAttribute("matchScore", matchScoreModel);
                 request.getRequestDispatcher("/WEB-INF/views/match-score.jsp").forward(request, response);
             }
-        } catch (NumberFormatException e) {
+        } catch (IllegalArgumentException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid match ID format");
         }
     }
-
-
 }
