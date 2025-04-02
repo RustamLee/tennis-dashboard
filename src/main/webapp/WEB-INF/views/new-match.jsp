@@ -29,7 +29,7 @@
                     <i class="ri-user-line"></i>
                     <input type="text" id="player2" name="playerTwo" required placeholder="player's name" oninput="validateInputs()">
                 </div>
-                <button id="playButton" type="submit" class="button new-match-button" disabled>Play</button>
+                <button id="playButton" type="submit" class="button new-match-button" >Play</button>
             </form>
 
         </div>

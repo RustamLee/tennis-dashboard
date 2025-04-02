@@ -6,18 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Match History</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
 </head>
 <body>
 <%@ include file="partials/header.jsp" %>
 <main>
-
-
   <div class="matches-container">
   <h2>Match History</h2>
 
   <form action="${pageContext.request.contextPath}/matches" method="get">
     <div class="search-bar">
-    <input type="text" name="filter_by_player_name" placeholder="Enter player name" value="${param.filter_by_player_name}">
+    <input type="text" name="filter_by_player_name" placeholder="player's name" value="${param.filter_by_player_name}">
     <button class="button search-button" type="submit">Search</button>
     </div>
   </form>

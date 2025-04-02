@@ -37,7 +37,6 @@
     </div>
         <nav class="nav-menu">
             <ul>
-                <li><a href="<%= request.getContextPath() %>/">Home</a></li>
                 <li><a href="<%= request.getContextPath() %>/new-match">New match</a></li>
                 <li><a href="<%= request.getContextPath() %>/matches">Match history</a></li>
             </ul>
@@ -48,7 +47,7 @@
 <div id="aboutModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <h3 class="modal-title">Rules of tennis</h3>
+        <h3 class="modal-title">Rules</h3>
         <p class="modal-text">
             This application helps track scores in a tennis match. The match follows a best-of-three sets format.
             To win a set, a player needs at least 6 games with a 2-game lead. If the score reaches 6-6, a tiebreak is played.
