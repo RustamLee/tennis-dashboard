@@ -14,7 +14,6 @@ public class Player {
     private String name;
 
     public Player() {
-        // Пустой конструктор нужен Hibernate
     }
 
     public Player(String name) {
@@ -36,4 +35,5 @@ public class Player {
     public void setName(String name) {
         this.name = name;
     }
+
 }

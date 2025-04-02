@@ -13,5 +13,6 @@ public class FinishedMatchesPersistenceService {
 
     public void saveMatch(Match match) {
         matchDAO.save(match);
+        System.out.println("Match saved: " + match);
     }
 }

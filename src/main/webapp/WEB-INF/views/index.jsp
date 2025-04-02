@@ -26,7 +26,7 @@
         </div>
       <div class="buttons-container">
         <a href="${pageContext.request.contextPath}/new-match" class="button">New Match</a>
-        <a href="${pageContext.request.contextPath}/matches" class="button">Current Matches</a>
+        <a href="${pageContext.request.contextPath}/matches" class="button">Finished Matches</a>
       </div>
     </div>
     <h1></h1>

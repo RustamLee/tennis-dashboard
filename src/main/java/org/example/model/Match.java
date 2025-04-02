@@ -69,14 +69,4 @@ public class Match {
         this.winner = winner;
     }
 
-    @Override
-    public String toString() {
-        return "Match{" +
-                "id=" + id +
-                ", player1=" + player1 +
-                ", player2=" + player2 +
-                ", winner=" + winner +
-                ", matchUuid=" + matchUuid +
-                '}';
-    }
 }
