@@ -37,15 +37,16 @@ public class MatchDAO {
         String query = "SELECT m FROM Match m " +
                 "JOIN m.player1 p1 " +
                 "JOIN m.player2 p2 " +
-                "WHERE (:name IS NULL OR p1.name LIKE :name OR p2.name LIKE :name) " +
+                "WHERE (:name IS NULL OR LOWER(p1.name) LIKE LOWER(:name) OR LOWER(p2.name) LIKE LOWER(:name)) " +
                 "ORDER BY m.id DESC";
 
         return entityManager.createQuery(query, Match.class)
-                .setParameter("name", playerName != null ? "%" + playerName + "%" : null)
-                .setFirstResult((page - 1) * 10) // Постраничный результат
-                .setMaxResults(10) // Количество матчей на странице
+                .setParameter("name", playerName != null ? "%" + playerName.toLowerCase() + "%" : null)
+                .setFirstResult((page - 1) * 10)
+                .setMaxResults(10)
                 .getResultList();
     }
+
 
     public int getTotalMatches(String playerName) {
         String query = "SELECT COUNT(m) FROM Match m " +

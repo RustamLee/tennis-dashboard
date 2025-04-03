@@ -36,5 +36,32 @@
     </div>
 </main>
 <%@ include file="partials/footer.jsp" %>
+<script>
+    function validateInputs() {
+        const player1 = document.getElementById("player1").value.trim();
+        const player2 = document.getElementById("player2").value.trim();
+        const message = document.getElementById("message1");
+        const playButton = document.getElementById("playButton");
+
+        const nameRegex = /^[A-Za-z]{2,15}$/;
+
+        let errorMessage = "Enter the names of the players. Names cannot be the same";
+
+        if (!player1 || !player2) {
+            errorMessage = "Names cannot be empty or spaces only";
+        } else if (!nameRegex.test(player1) || !nameRegex.test(player2)) {
+            errorMessage = "Names must contain only letters and be 2-15 characters long";
+        } else if (player1.toLowerCase() === player2.toLowerCase()) {
+            errorMessage = "Names cannot be the same";
+        } else {
+            message.textContent = "Enter the names of the players. Names cannot be the same";
+            playButton.disabled = false;
+            return;
+        }
+
+        message.textContent = errorMessage;
+        playButton.disabled = true;
+    }
+</script>
 </body>
 </html>
