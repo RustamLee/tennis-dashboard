@@ -13,7 +13,7 @@
 
         btn.addEventListener("click", function (event) {
             event.preventDefault(); // Предотвращает переход по ссылке
-            modal.style.display = "block";
+            modal.style.display = "flex";
         });
 
         closeBtn.addEventListener("click", function () {

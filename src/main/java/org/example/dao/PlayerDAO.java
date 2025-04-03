@@ -18,6 +18,12 @@ public class PlayerDAO {
 
 
     public void save(Player player) {
+        if (player.getName() == null || player.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Player name cannot be null or empty");
+        }
+        if (player.getName().length() > 15) {
+            throw new IllegalArgumentException("Player name cannot be longer than 15 characters");
+        }
         EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();
@@ -30,6 +36,10 @@ public class PlayerDAO {
     }
 
     public Player findByName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Player name cannot be null or empty");
+        }
+
         try {
             return entityManager.createQuery("SELECT p FROM Player p WHERE p.name = :name", Player.class)
                     .setParameter("name", name)
@@ -42,38 +52,5 @@ public class PlayerDAO {
         } catch (RuntimeException e) {
             throw e;
         }
-    }
-
-    public void update(Player player) {
-        EntityTransaction transaction = entityManager.getTransaction();
-        try {
-            transaction.begin();
-            entityManager.merge(player);
-            transaction.commit();
-        } catch (RuntimeException e) {
-            if (transaction.isActive()) transaction.rollback();
-            throw e;
-        }
-    }
-
-    public void delete(Player player) {
-        EntityTransaction transaction = entityManager.getTransaction();
-        try {
-            transaction.begin();
-            entityManager.remove(entityManager.contains(player) ? player : entityManager.merge(player));
-            transaction.commit();
-        } catch (RuntimeException e) {
-            if (transaction.isActive()) transaction.rollback();
-            throw e;
-        }
-    }
-
-    public Player findById(Long id) {
-        return entityManager.find(Player.class, id);
-    }
-
-
-    public List<Player> findAll() {
-        return entityManager.createQuery("from Player", Player.class).getResultList();
     }
 }
