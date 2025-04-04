@@ -44,7 +44,7 @@ The application follows a simplified version of the **official tennis scoring sy
 1. **Build the WAR file** locally using Maven
 2. **Set up a cloud Linux server** with Java and Tomcat installed
 3. **Deploy the WAR file** to the Tomcat webapps directory
-4. **Access the application** at `http://$server_ip:8080/$app_root_path`
+4. **Access the application** at `http://134.209.66.42:8080/tennis-dashboard/`
 
 ## Testing
 The project includes **unit tests** to verify the correctness of the tennis scoring system. Example test cases:
