@@ -21,29 +21,36 @@ public class MatchScoreCalculationService {
         int currentPoints = isPlayer1 ? matchScoreModel.getPointsPlayer1() : matchScoreModel.getPointsPlayer2();
         int opponentPoints = isPlayer1 ? matchScoreModel.getPointsPlayer2() : matchScoreModel.getPointsPlayer1();
 
-        // Если у игрока уже Advantage, он выигрывает гейм
-        if (currentPoints == 50) {
+        boolean p1HasAdv = matchScoreModel.isPlayer1HasAdvantage();
+        boolean p2HasAdv = matchScoreModel.isPlayer2HasAdvantage();
+
+        if ((isPlayer1 && p1HasAdv) || (!isPlayer1 && p2HasAdv)) {
             awardGame(matchScoreModel, scoringPlayer);
+            matchScoreModel.setPlayer1HasAdvantage(false);
+            matchScoreModel.setPlayer2HasAdvantage(false);
             return;
         }
 
-        // Если оба игрока на 40, начисляем Advantage
+        if ((isPlayer1 && p2HasAdv) || (!isPlayer1 && p1HasAdv)) {
+            matchScoreModel.setPlayer1HasAdvantage(false);
+            matchScoreModel.setPlayer2HasAdvantage(false);
+            return;
+        }
+
         if (currentPoints == 40 && opponentPoints == 40) {
             if (isPlayer1) {
-                matchScoreModel.setPointsPlayer1(50);
+                matchScoreModel.setPlayer1HasAdvantage(true);
             } else {
-                matchScoreModel.setPointsPlayer2(50);
+                matchScoreModel.setPlayer2HasAdvantage(true);
             }
             return;
         }
 
-        // Если у игрока 40 и соперник не на 40 — победа в гейме
-        if (currentPoints == 40) {
+        if (currentPoints == 40 && opponentPoints < 40) {
             awardGame(matchScoreModel, scoringPlayer);
             return;
         }
 
-        // Увеличение очков по стандартной схеме (0 → 15 → 30 → 40)
         int nextPoints = switch (currentPoints) {
             case 0 -> 15;
             case 15 -> 30;
@@ -99,6 +106,9 @@ public class MatchScoreCalculationService {
         }
         matchScoreModel.setPointsPlayer1(0);
         matchScoreModel.setPointsPlayer2(0);
+        matchScoreModel.setPlayer1HasAdvantage(false);
+        matchScoreModel.setPlayer2HasAdvantage(false);
+
         System.out.println(matchScoreModel.getMatch().getPlayer1());
         checkSetWin(matchScoreModel);
     }

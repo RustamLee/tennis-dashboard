@@ -42,20 +42,29 @@ public class MatchScoreCalculationServiceTest {
         matchScoreModel.setPointsPlayer2(40);
 
         service.incrementScore(matchScoreModel, player1);
-        assertEquals(50, matchScoreModel.getPointsPlayer1());
+
+        assertTrue(matchScoreModel.isPlayer1HasAdvantage());
+        assertFalse(matchScoreModel.isPlayer2HasAdvantage());
+        assertEquals(40, matchScoreModel.getPointsPlayer1());
     }
+
 
     //  player wins the game after gaining an advantage
     @Test
     void testIncrementScore_AdvantageToGameWin() {
-        matchScoreModel.setPointsPlayer1(50);
+        matchScoreModel.setPointsPlayer1(40);
         matchScoreModel.setPointsPlayer2(40);
+        matchScoreModel.setPlayer1HasAdvantage(true);
 
         service.incrementScore(matchScoreModel, player1);
+
         assertEquals(1, matchScoreModel.getGamesPlayer1());
         assertEquals(0, matchScoreModel.getPointsPlayer1());
         assertEquals(0, matchScoreModel.getPointsPlayer2());
+        assertFalse(matchScoreModel.isPlayer1HasAdvantage());
+        assertFalse(matchScoreModel.isPlayer2HasAdvantage());
     }
+
 
     // game doesn't finish if score is 40/40
     @Test
@@ -64,11 +73,15 @@ public class MatchScoreCalculationServiceTest {
         matchScoreModel.setPointsPlayer2(40);
 
         service.incrementScore(matchScoreModel, player1);
-        assertEquals(50, matchScoreModel.getPointsPlayer1());
+
+        assertTrue(matchScoreModel.isPlayer1HasAdvantage());
+        assertFalse(matchScoreModel.isPlayer2HasAdvantage());
+        assertEquals(40, matchScoreModel.getPointsPlayer1());
         assertEquals(40, matchScoreModel.getPointsPlayer2());
         assertEquals(0, matchScoreModel.getGamesPlayer1());
         assertEquals(0, matchScoreModel.getGamesPlayer2());
     }
+
 
     // player wins the game when the score is 40-0
     @Test

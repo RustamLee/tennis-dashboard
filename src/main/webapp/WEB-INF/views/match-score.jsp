@@ -48,11 +48,15 @@
                         <c:when test="${matchScore.tieBreak}">
                             ${matchScore.tieBreakPointsPlayer1}
                         </c:when>
+                        <c:when test="${matchScore.player1HasAdvantage}">
+                            AD
+                        </c:when>
                         <c:otherwise>
                             ${matchScore.pointsPlayer1}
                         </c:otherwise>
                     </c:choose>
                 </td>
+
 
                 <td>
                     <form action="${pageContext.request.contextPath}/match-score" method="POST">
@@ -71,11 +75,15 @@
                         <c:when test="${matchScore.tieBreak}">
                             ${matchScore.tieBreakPointsPlayer2}
                         </c:when>
+                        <c:when test="${matchScore.player2HasAdvantage}">
+                            AD
+                        </c:when>
                         <c:otherwise>
                             ${matchScore.pointsPlayer2}
                         </c:otherwise>
                     </c:choose>
                 </td>
+
 
                 <td>
                     <form action="${pageContext.request.contextPath}/match-score" method="POST">

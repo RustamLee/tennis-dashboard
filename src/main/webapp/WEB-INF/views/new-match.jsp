@@ -43,7 +43,7 @@
         const message = document.getElementById("message1");
         const playButton = document.getElementById("playButton");
 
-        const nameRegex = /^[A-Za-z]{2,15}$/;
+        const nameRegex = /^[\p{L}]{2,15}$/u;
 
         let errorMessage = "Enter the names of the players. Names cannot be the same";
 

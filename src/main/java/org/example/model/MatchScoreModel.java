@@ -13,6 +13,9 @@ public class MatchScoreModel {
     private int tieBreakPointsPlayer2;
     private int pointsPlayer1;
     private int pointsPlayer2;
+    private boolean player1HasAdvantage;
+    private boolean player2HasAdvantage;
+
 
     public MatchScoreModel(Match match) {
         this.match = match;
@@ -24,6 +27,8 @@ public class MatchScoreModel {
         this.gamesPlayer2 = 0;
         this.pointsPlayer1 = 0;
         this.pointsPlayer2 = 0;
+        this.player1HasAdvantage = false;
+        this.player2HasAdvantage = false;
     }
 
     public Match getMatch() {
@@ -104,5 +109,18 @@ public class MatchScoreModel {
 
     public void setTieBreakPointsPlayer2(int points) {
         this.tieBreakPointsPlayer2 = points;
+    }
+
+    public boolean isPlayer1HasAdvantage() {
+        return player1HasAdvantage;
+    }
+    public void setPlayer1HasAdvantage(boolean player1HasAdvantage) {
+        this.player1HasAdvantage = player1HasAdvantage;
+    }
+    public boolean isPlayer2HasAdvantage() {
+        return player2HasAdvantage;
+    }
+    public void setPlayer2HasAdvantage(boolean player2HasAdvantage) {
+        this.player2HasAdvantage = player2HasAdvantage;
     }
 }

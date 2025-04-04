@@ -36,20 +36,26 @@ public class MatchScoreController extends HttpServlet {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Match ID is missing");
             return;
         }
+
         try {
             UUID matchUuid = UUID.fromString(uuidParam);
-            Match match = ongoingMatchesService.getMatchScoreModel(matchUuid).getMatch();
-            if (match == null) {
+
+            MatchScoreModel matchScoreModel = ongoingMatchesService.getMatchScoreModel(matchUuid);
+            if (matchScoreModel == null) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Match not found");
                 return;
             }
-            MatchScoreModel matchScoreModel = new MatchScoreModel(match);
-            request.setAttribute("matchScore", matchScoreModel);
+
+            Match match = matchScoreModel.getMatch();
+            MatchScoreModel model = new MatchScoreModel(match);
+            request.setAttribute("matchScore", model);
             request.getRequestDispatcher("/WEB-INF/views/match-score.jsp").forward(request, response);
+
         } catch (IllegalArgumentException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid match ID format");
         }
     }
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -66,6 +72,11 @@ public class MatchScoreController extends HttpServlet {
 
         if (matchScoreModel == null) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Match not found");
+            return;
+        }
+        if (matchScoreModel.getMatch().getWinner() != null) {
+            request.setAttribute("matchScore", matchScoreModel);
+            request.getRequestDispatcher("/WEB-INF/views/final-score.jsp").forward(request, response);
             return;
         }
 
