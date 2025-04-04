@@ -499,6 +499,15 @@ footer {
     .image-container{
         display: none;
     }
+    .subtitle {
+        font-size: 20px;
+        min-height: 70px;
+        max-width: 100%;
+        word-wrap: break-word;
+        text-align: center;
+        flex-wrap: wrap;
+        overflow: hidden;
+    }
     .container{
         flex-direction: column;
         align-items: center;
@@ -506,7 +515,7 @@ footer {
         gap: 20px;
     }
     .form-container{
-        width: 90%;
+        width: 100%;
     }
     .buttons-container{
         width: 100%;
@@ -520,9 +529,6 @@ footer {
     }
     .input-container i{
         font-size: 25px;
-    }
-    .form-container .subtitle{
-        font-size: 20px;
     }
     .content-table th:first-child,
     .content-table td:first-child {
@@ -547,11 +553,6 @@ footer {
 
 }
 @media (max-width: 400px) {
-
-    .subtitle {
-        font-size: 24px;
-        min-height: 70px;
-    }
 
     .content-table td {
         white-space: nowrap;
